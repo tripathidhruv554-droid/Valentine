@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Riya ❤️</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", cursive;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #f6a5c0, #8b5e3c);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Floating hearts */
+.hearts span {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: float 8s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-120vh); }
+}
+
+.card {
+  background: rgba(255,255,255,0.95);
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 360px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  z-index: 2;
+}
+
+h1 {
+  color: #8b2f5b;
+  font-size: 24px;
+}
+
+.buttons {
+  position: relative;
+  height: 120px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 12px 26px;
+  border-radius: 30px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+#yes {
+  background: #ff5fa2;
+  color: white;
+}
+
+/* NO BUTTON — IMPOSSIBLE MODE */
+#no {
+  background: #c28b68;
+  color: white;
+  position: fixed;
+  pointer-events: none;
+}
+
+.gallery img {
+  width: 100%;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+.message {
+  display: none;
+  margin-top: 15px;
+  color: #5a2b2b;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts"></div>
+
+<div class="card">
+  <h1>Riya, will you be my Valentine? 💕</h1>
+
+  <div class="buttons">
+    <button id="yes">Yes 💖</button>
+    <button id="no">No 😅</button>
+  </div>
+
+  <div class="gallery">
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+  </div>
+
+  <div class="message" id="message">
+    You are the one and only for me.<br>
+    My love for you is an everlasting candle.<br>
+    I would like you to be mine not only in this life but in every.<br>
+    Me as a dog and you as a billi 🐶🐱<br>
+    I love you and my heart will only beat for you. ❤️
+  </div>
+</div>
+
+<audio id="music" src="song.mp3" loop></audio>
+<canvas id="confetti"></canvas>
+
+<script>
+/* NO BUTTON TELEPORT */
+const noBtn = document.getElementById("no");
+
+function teleportNo() {
+  const padding = 120;
+  const x = Math.random() * (window.innerWidth - padding);
+  const y = Math.random() * (window.innerHeight - padding);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+setInterval(teleportNo, 600);
+document.addEventListener("mousemove", teleportNo);
+document.addEventListener("touchmove", teleportNo);
+
+/* YES BUTTON */
+const yesBtn = document.getElementById("yes");
+const message = document.getElementById("message");
+const music = document.getElementById("music");
+
+yesBtn.addEventListener("click", () => {
+  message.style.display = "block";
+  music.play();
+  startConfetti();
+});
+
+/* CONFETTI */
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let confetti = [];
+
+function startConfetti() {
+  for (let i = 0; i < 160; i++) {
+    confetti.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * 8 + 4,
+      color: `hsl(${Math.random()*360},100%,70%)`
+    });
+  }
+  animate();
+}
+
+function animate() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confetti.forEach(p => {
+    ctx.beginPath();
+    ctx.fillStyle = p.color;
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fill();
+    p.y += p.d;
+    if (p.y > canvas.height) p.y = -10;
+  });
+  requestAnimationFrame(animate);
+}
+
+/* HEARTS */
+const heartsContainer = document.querySelector(".hearts");
+setInterval(() => {
+  const heart = document.createElement("span");
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 4 + 4) + "s";
+  heartsContainer.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}, 300);
+</script>
+
+</body>
+</html>
